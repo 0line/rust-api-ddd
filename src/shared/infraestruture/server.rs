@@ -17,7 +17,7 @@ impl Server {
         Self { port }
     }
 
-    async fn listen(&self) -> std::io::Result<()> {
+    async fn start(&self) -> std::io::Result<()> {
         let mut server = HttpServer::new(|| {
             App::new()
                 .wrap(middleware::Compress::default())
@@ -48,5 +48,5 @@ impl Server {
 
 pub async fn run() {
     let server = Server::new();
-    server.listen().await.unwrap();
+    server.start().await.unwrap();
 }

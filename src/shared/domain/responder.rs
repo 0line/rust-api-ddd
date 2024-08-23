@@ -1,18 +1,19 @@
 use serde::{Deserialize, Serialize};
+use serde_json;
 use serde_json::{Result, Value};
 
-#[derive(serde::Serialize)]
+#[derive(serde::Serialize, serde::Deserialize, Debug)]
 pub struct APIResponseSuccess {
-    success: bool,
-    message: String,
-    data: Vec<serde_json::Value>,
+    pub success: bool,
+    pub message: String,
+    pub data: Vec<serde_json::Value>,
 }
 
-#[derive(serde::Serialize)]
+#[derive(serde::Serialize, serde::Deserialize, Debug)]
 pub struct APIResponseError {
-    success: bool,
-    message: String,
-    error: Vec<serde_json::Value>,
+    pub success: bool,
+    pub message: String,
+    pub error: Vec<serde_json::Value>,
 }
 
 impl APIResponseSuccess {

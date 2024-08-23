@@ -7,7 +7,7 @@ pub struct StatusController {
 
 impl Controller for StatusController {
     fn run(_req: HttpRequest) -> Result<HttpResponse, Error> {
-        let mut result = APIResponseSuccess::new(true, "todo ok".to_string(), vec![]);
+        let result = APIResponseSuccess::new(true, "todo ok".to_string(), vec![]);
         Ok(HttpResponse::Ok().json(result))
     }
 }

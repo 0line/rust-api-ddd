@@ -8,8 +8,4 @@ use serde_json::json;
 #[get("/healthy")]
 async fn run(req: HttpRequest) -> Result<HttpResponse, Error> {
     return <StatusController as Controller>::run(req);
-    //status::run().await
-    /* let mut result = APIResponseSuccess::new(true, "todo ok".to_string(), vec![]);
-
-    Ok(HttpResponse::Ok().json(result)) */
 }
