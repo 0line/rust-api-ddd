@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: apirust/users
+    ports:
+      - "8080:3000"
+    volumes:
+      - ".:/usr/src/api"
