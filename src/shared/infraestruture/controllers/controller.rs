@@ -1,4 +1,6 @@
-use actix_web::{web, Error, HttpRequest, HttpResponse, Responder, Result};
+use actix_web::{Error, HttpRequest, HttpResponse, Result};
+use serde_json::Value;
+
 pub trait Controller {
-    fn run(_req: HttpRequest) -> Result<HttpResponse, Error>;
+    fn run(req: HttpRequest, body:Value) -> Result<HttpResponse, Error>;
 }

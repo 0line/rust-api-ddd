@@ -1,4 +1,4 @@
-use actix_web::{middleware, web, App, Error, HttpServer};
+use actix_web::{middleware, web, App, HttpServer};
 extern crate dotenv;
 use crate::shared::infraestruture::router::index::register;
 use dotenv::dotenv;
