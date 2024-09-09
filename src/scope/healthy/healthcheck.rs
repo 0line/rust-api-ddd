@@ -6,8 +6,8 @@ use serde_json::Value;
 pub struct StatusController {}
 
 impl Controller for StatusController {
-    fn run(_req:HttpRequest, body: Value) -> Result<HttpResponse, Error> {
+    async fn run(_req:HttpRequest, body: Value) -> HttpResponse {
         let result = APIResponse::new(true, Some("todo ok".to_string()), None, None);
-        Ok(HttpResponse::Ok().json(result))
+        HttpResponse::Ok().json(result)
     }
 }

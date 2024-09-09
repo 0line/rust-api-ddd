@@ -1,14 +1,15 @@
-use actix_web::{post, web, Error, HttpRequest, HttpResponse};
-use actix_web::web::Json;
+use actix_web::{put, web, Error, HttpRequest, HttpResponse};
 use serde_json::Value;
-use crate::scope::users::infraestructure::register::RegisterController;
+use crate::scope::users::domain::user_repository::UserRepository;
+//use crate::scope::users::infraestructure::controller::register_put_controller::RegisterController;
 use crate::shared::infraestruture::controllers::controller::Controller;
 
 
-#[post("/register")]
-async fn run(req: HttpRequest, body: web::Json<Value>) -> actix_web::Result<HttpResponse, Error> {
+/*#[put("/register")]
+async fn run(req: HttpRequest, body: web::Json<Value>) -> HttpResponse {
     return <RegisterController as Controller>::run(
         req,
         body.into_inner(),
-    );
-}
+    ).await;
+}*/
+
