@@ -16,7 +16,7 @@ async-trait = "0.1.82"
 fake = {version="2", features=['derive']}
 rand = "0"
 serde_derive = "1.0"
-
+sea-orm = { version = "1.0.0-rc.5", features = [ "sqlx-postgres", "tokio", "macros" ] }
 
 [dependencies.uuid]
 version = "1.10.0"

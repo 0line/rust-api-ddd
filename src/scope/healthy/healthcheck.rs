@@ -1,5 +1,3 @@
-use future::Future;
-use std::future;
 use crate::shared::domain::responder::APIResponse;
 use crate::shared::infraestruture::controllers::controller::Controller;
 use actix_web::{HttpRequest, HttpResponse};

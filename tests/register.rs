@@ -3,11 +3,11 @@ use serde_json::Value;
 
 #[macro_use]
 extern crate serde_json;
-use apiusers::shared::{domain::responder::APIResponse, infraestruture::router::users};
+use apiusers::shared::{domain::responder::APIResponse, infraestruture::router::register_users};
 
 #[actix_rt::test]
 async fn test_register_user() {
-    let mut app = test::init_service(App::new().service(users::run)).await;
+    let mut app = test::init_service(App::new().service(register_users::run)).await;
     let data = json!({
         "uuid":"b92f6347-4d73-4427-8ed7-512f9d58738f",
         "email":"test@mail.com",

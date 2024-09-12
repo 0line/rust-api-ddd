@@ -1,3 +1,3 @@
 pub mod healthy;
 pub mod index;
-pub mod users;
+pub mod register_users;

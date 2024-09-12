@@ -33,28 +33,3 @@ impl<R: UserRepository> Controller for RegisterController<R> {
 
     }
 }
-
-/*
-#[cfg(test)]
-mod tests {
-    use actix_web::{test, FromRequest};
-use crate::scope::users::domain::user_repository::UserRepository;
-use crate::scope::users::application::user_register::UserRegisterService;
-use crate::scope::users::infraestructure::controller::register_put_controller::RegisterController;
-use serde_json::json;
-use actix_web::HttpRequest;
-    use crate::scope::users::infraestructure::persistence::memory::MemoryRepository;
-
-    #[actix_web::test]
-    async fn ensure_register_put_controller(){
-        let controller = RegisterController::new(UserRegisterService::new(MemoryRepository::new()));
-        let data = json!({
-            "uuid":"b92f6347-4d73-4427-8ed7-512f9d58738f",
-            "email":"test@mail.com",
-            "pwd": "1234567890"
-        });
-        let req = test::TestRequest::set_json(&data, data).to_request();
-        let resp = controller.run(req, data).await;
-        println!("{:?}", resp);
-    }
-}*/
