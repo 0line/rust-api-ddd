@@ -1,8 +1,6 @@
-use std::convert::TryFrom;
 use std::fmt;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use crate::scope::users::domain::user_pwd::PasswordError;
 
 #[derive(Debug)]
 pub enum EmailError {

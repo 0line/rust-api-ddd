@@ -1,7 +1,7 @@
-use std::convert::{Infallible, TryFrom};
 use std::fmt;
 use serde::{Deserialize, Serialize};
-use uuid::{uuid, Uuid};
+use serde_json::{json, Value};
+use uuid::{Uuid};
 use crate::scope::users::domain::user_email::UserEmail;
 use crate::scope::users::domain::user_id::UserId;
 use crate::scope::users::domain::user_pwd::UserPwd;
@@ -31,6 +31,14 @@ impl User {
 
     pub fn get_pwd(&self) -> &str {
         &self.pwd.get_value()
+    }
+
+    pub fn get_user_to_json(&self) -> Value {
+        json!({
+            "uuid": self.uuid.get_value(),
+            "email": self.email.get_value(),
+            "pwd": self.pwd.get_value()
+        })
     }
 }
 

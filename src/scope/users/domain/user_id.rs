@@ -1,7 +1,6 @@
-use std::convert::TryFrom;
 use std::fmt;
 use serde::{Deserialize, Serialize};
-use uuid::{uuid, Uuid};
+use uuid::{Uuid};
 
 #[derive(Debug)]
 pub enum IdError {
@@ -47,7 +46,7 @@ impl UserId {
 
 // Implementación de la serialización y deserialización para `Uuid`
 mod uuid_serde {
-    use serde::{self, Deserialize, Deserializer, Serialize, Serializer};
+    use serde::{self, Deserialize, Deserializer, Serializer};
     use uuid::Uuid;
 
     pub fn serialize<S>(uuid: &Uuid, serializer: S) -> Result<S::Ok, S::Error>

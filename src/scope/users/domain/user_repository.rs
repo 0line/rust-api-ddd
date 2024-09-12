@@ -1,7 +1,6 @@
-use std::sync::RwLock;
+
 use async_trait::async_trait;
 use crate::scope::users::domain::user::User;
-use mockall::predicate::*;
 use mockall::*;
 use crate::shared::domain::responder::APIResponse;
 
@@ -11,7 +10,7 @@ pub trait UserRepository: Send + Sync {
     async fn save(&self, user: User) -> APIResponse;
 }
 
-pub struct InMemoryUserRepository {
+/*pub struct InMemoryUserRepository {
     users: RwLock<Vec<User>>,
 }
 
@@ -45,4 +44,4 @@ impl UserRepository for InMemoryUserRepository {
             None,
             None)
     }
-}
+}*/

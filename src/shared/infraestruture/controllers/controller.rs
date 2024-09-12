@@ -3,4 +3,5 @@ use serde_json::Value;
 
 pub trait Controller {
     async fn run(req: HttpRequest, body:Value) -> HttpResponse;
+
 }

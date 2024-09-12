@@ -22,4 +22,8 @@ impl APIResponse {
             error
        }
     }
+
+    pub fn get_success(&self) -> bool {
+        self.success
+    }
 }

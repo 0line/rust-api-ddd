@@ -1,9 +1,6 @@
-use std::convert::TryFrom;
+
 use std::fmt;
 use serde::{Deserialize, Serialize};
-use serde_json::value;
-use uuid::Uuid;
-use crate::scope::users::domain::user_id::UserId;
 
 #[derive(Debug)]
 pub enum PasswordError {
@@ -17,7 +14,7 @@ impl fmt::Display for PasswordError {
         match self {
             PasswordError::Empty => write!(f, "La contraseña no puede estar vacía."),
             PasswordError::TooShort => write!(f, "La contraseña debe tener al menos 8 caracteres."),
-            PasswordError::Invalid => write!(f, "La contraseña no es válida."),
+            PasswordError::Invalid => write!(f, "La contraseña no es válida no cumple con el formato."),
         }
     }
 }
