@@ -1,6 +1,7 @@
 use std::fmt;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use crate::scope::users::domain::users_errors::UserError;
 
 #[derive(Debug)]
 pub enum EmailError {
@@ -26,12 +27,12 @@ pub struct UserEmail {
 
 
 impl UserEmail {
-    pub fn new(value: String) -> Result<Self, EmailError> {
+    pub fn new(value: String) -> Result<Self, UserError> {
         if value.is_empty() {
-            return Err(EmailError::Empty);
+            return Err(UserError::Empty("email".to_string()));
         }
         if !Self::ensure_email_format(&value){
-            return Err(EmailError::InvalidFormat(value))
+            return Err(UserError::InvalidFormat("email".to_string(),"example@mail.com".to_string()))
         }
         Ok(
             Self{

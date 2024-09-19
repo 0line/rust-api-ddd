@@ -1,23 +1,8 @@
 use std::fmt;
 use serde::{Deserialize, Serialize};
 use uuid::{Uuid};
+use crate::scope::users::domain::users_errors::UserError;
 
-#[derive(Debug)]
-pub enum IdError {
-    Empty,
-    InvalidFormat(String),
-}
-
-impl fmt::Display for IdError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            IdError::Empty => write!(f, "Input id is required."),
-            IdError::InvalidFormat(value) => write!(f, "The value <{}> is invalid", value),
-        }
-    }
-}
-
-impl std::error::Error for IdError {}
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserId {
     #[serde(with = "uuid_serde")]
@@ -25,12 +10,12 @@ pub struct UserId {
 }
 
 impl UserId {
-    pub fn new(value: String) -> Result<Self, IdError> {
+    pub fn new(value: String) -> Result<Self, UserError> {
         if value.is_empty() {
-            return Err(IdError::Empty);
+            return Err(UserError::Empty("id".to_string()));
         }
         if !Uuid::parse_str(&value).is_ok() {
-            return Err(IdError::InvalidFormat(value));
+            return Err(UserError::Invalid("id".to_string()));
         }
         Ok(
             Self{

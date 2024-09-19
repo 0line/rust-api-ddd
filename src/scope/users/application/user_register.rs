@@ -78,45 +78,7 @@ mod tests {
     use mockall::predicate::*;
     use mockall::*;
     use serde_json::json;
-    //use crate::scope::users::domain::user_repository::{UserRepository, InMemoryUserRepository};
     use crate::scope::users::infraestructure::persistence::memory::MemoryRepository;
-
-    /*#[actix_web::test]
-    async fn ensure_user_service(){
-       //let mut repo = UserRepository::new();
-        let repo = InMemoryUserRepository::new();
-        let service = UserRegisterService::new(repo);
-        const UUID: &str = "b92f6347-4d73-4427-8ed7-512f9d58738f";
-        const EMAIL: &str   = "test@mail.com";
-        const PWD: &str  = "Asdf123#";
-        let request = UserRegisterRequest::new(
-            UUID.parse().unwrap(),
-            EMAIL.to_string(),
-            PWD.to_string()
-        );
-        let result = service.execute(request).await;
-        println!("{:?}",  serde_json::to_string(&result));
-
-   }
-
-    #[actix_web::test]
-    async fn failed_user_service(){
-        //let mut repo = UserRepository::new();
-        let repo = InMemoryUserRepository::new();
-        let service = UserRegisterService::new(repo);
-        const UUID: &str = "b92f63474d73-4427-8ed7-512f9d58738f";
-        const EMAIL: &str   = "test.mail.com";
-        const PWD: &str  = "Asd";
-        let request = UserRegisterRequest::new(
-            UUID.parse().unwrap(),
-            EMAIL.to_string(),
-            PWD.to_string()
-        );
-        let result = service.execute(request).await;
-        println!("{:?}",  serde_json::to_string(&result));
-
-    }*/
-
     #[actix_web::test]
     async fn ensure_user_service(){
         let repo = MemoryRepository::new();

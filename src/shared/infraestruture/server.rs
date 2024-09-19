@@ -1,7 +1,7 @@
 use actix_web::{middleware, web, App, HttpResponse, HttpServer};
-extern crate dotenv;
+extern crate dotenvy;
 use crate::shared::infraestruture::router::index::register;
-use dotenv::dotenv;
+use dotenvy::dotenv;
 use std::env;
 use std::str::FromStr;
 
