@@ -1,24 +1,7 @@
-use std::fmt;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use crate::scope::users::domain::users_errors::UserError;
 
-#[derive(Debug)]
-pub enum EmailError {
-    Empty,
-    InvalidFormat(String),
-}
-
-impl fmt::Display for EmailError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            EmailError::Empty => write!(f, "Input email is required."),
-            EmailError::InvalidFormat(value) => write!(f, "The value <{}> is invalid", value),
-        }
-    }
-}
-
-impl std::error::Error for EmailError {}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserEmail {

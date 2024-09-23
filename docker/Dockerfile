@@ -1,16 +1,20 @@
+# Dockerfile
 FROM rust:1.80.1-slim AS builder
-WORKDIR /apirust
+
+WORKDIR /app
 COPY . .
-RUN cargo install --path .
-#CMD ["./target/release/apirust"]
+RUN apt-get update && apt-get install libpq5 -y
+# Build your program for release
+RUN cargo build --release
 
-FROM debian:buster-slim
-RUN apt-get update && apt-get install -y && rm -rf /var/lib/apt/lists/*
-#COPY --from=builder /usr/apirust /usr/local/cargo/bin/apirust
+#Preduction stage
+FROM debian:stable-slim
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    curl \
+    wget
+WORKDIR /user/local/bin
 
-COPY --from=builder --chown=app_user:app_user /apirust/target/release/apiusers .
+COPY --from=builder /app/target/release/apiusers /usr/local/bin/apiusers
 
-RUN adduser -D app_user
-
-USER app_user
-CMD ["./apirust"]
+CMD [ "apiusers" ]

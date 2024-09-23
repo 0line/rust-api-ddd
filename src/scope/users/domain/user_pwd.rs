@@ -1,5 +1,3 @@
-
-use std::fmt;
 use serde::{Deserialize, Serialize};
 use crate::scope::users::domain::users_errors::UserError;
 

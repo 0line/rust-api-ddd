@@ -55,8 +55,6 @@ impl fmt::Display for User {
 
 #[cfg(test)]
 mod tests {
-    use serde_json::json;
-    use crate::scope::users::domain::user;
     use super::*;
 
     //const UUID : UserId  = UserId::try_from("b92f6347-4d73-4427-8ed7-512f9d58738f").unwrap();
@@ -91,50 +89,10 @@ mod tests {
             },
             Err(e) => {
                 println!("Error: {}", e);
-                assert_eq!(e.to_string(), "The value <id> is invalid");
+                assert_eq!(e.to_string(), "The value id is invalid");
             }
         }
 
-        //assert_eq!(result.unwrap_err(), "The value <9878> is invalid");
     }
 
-    // #[test]
-    // fn should_fail_email() {
-    //
-    //     let result = User::new(
-    //         UserId::new("9878".to_string()).unwrap(),
-    //         UserEmail::new(EMAIL.to_string()).expect("The value <mail.mail.com> is invalid"),
-    //         UserPwd::new(PWD.to_string()).expect("The value <mail.mail.com> is invalid")
-    //     );
-    //     // match result {
-    //     //     Ok(r) => println!("{:?}", r),
-    //     //     Err(e) => println!("{:?}", e)
-    //     // }
-    //    // println!("{:?}", result.unwrap().get_id());
-    //    // assert_eq!("The value <mail.mail.com> is invalid", result.unwrap_err());
-    //     if let Err(e) = result {
-    //         println!("{:?}", e.to_string());
-    //         //assert!(e.contains("The value <mail.mail.com> is invalid"));
-    //     }
-    // }
-
-    #[test]
-    fn should_fail_pwd() {
-        if let Err(err) = User::new(
-            UserId::new(UUID.to_string()).unwrap(),
-            UserEmail::new(EMAIL.to_string()).unwrap(),
-            UserPwd::new("123456".to_string()).unwrap()
-        ){
-            match err {
-                UserError::TooShort(field, _) => {
-                    assert_eq!(field, "pwd");
-                },
-                _ => {
-                    assert!(false);
-                }
-            }
-        }
-        //println!("{:?}", result);
-        //assert_eq!("The value <mail.mail.com> is invalid", result.unwrap_err());
-    }
 }

@@ -2,10 +2,10 @@ use std::option::Option;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
 pub struct APIResponse {
-    success: bool,
-    message: Option<String>,
-    data: Option<Vec<serde_json::Value>>,
-    error: Option<Vec<String>>,
+    pub success: bool,
+    pub message: Option<String>,
+    pub data: Option<Vec<serde_json::Value>>,
+    pub error: Option<Vec<String>>,
 }
 
 impl APIResponse {
