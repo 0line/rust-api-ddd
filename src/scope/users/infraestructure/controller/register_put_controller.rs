@@ -8,7 +8,6 @@ use crate::scope::users::infraestructure::persistence::memory::MemoryRepository;
 pub struct RegisterController<R: UserRepository> {
     user_register: UserRegisterService<R>,
 }
-
 impl<R:UserRepository> RegisterController<R> {
     pub fn new(user_register: UserRegisterService<R>) -> Self {
         Self {

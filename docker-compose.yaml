@@ -16,4 +16,20 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
-    restart: always
+    depends_on:
+        - dbusers
+  dbusers:
+    container_name: dbusers
+    image: postgres:13
+    user: ${RUN_USER:-1000:1000}
+    ports:
+      - "5432:5432"
+    env_file:
+      - .docker.env
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./data:/var/lib/postgresql/data 777

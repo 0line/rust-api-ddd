@@ -1,0 +1,139 @@
+use std::convert::TryInto;
+use std::env;
+use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, DbErr, RuntimeErr, Statement};
+use std::time::Duration;
+use dotenvy::dotenv;
+
+
+//Factory
+#[derive(Debug)]
+pub struct SeaOrmConfigPosgresqlFactory {
+    connection: Option<DatabaseConnection>,
+}
+
+impl SeaOrmConfigPosgresqlFactory {
+    async fn new() ->  Result<Self, DbErr> {
+        dotenv().ok();
+        let username = env::var("DB_USER").unwrap_or_else(|_| "username".to_string());
+        let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "password".to_string());
+        let database = env::var("DB_NAME").unwrap_or_else(|_| "database".to_string());
+        let host = env::var("DB_HOST").unwrap_or_else(|_| "host".to_string());
+        let port = env::var("DB_PORT").unwrap_or_else(|_| "5432".to_string());
+        let schema = env::var("DB_SCHEMA").unwrap_or_else(|_| "public".to_string());
+        //postgres://username:password@host/database?currentSchema=my_schema
+        let url = format!(
+            "postgres://{}:{}@{}:{}/{}?currentSchema={}",
+            username, password, host, port, database, schema
+        );
+        let mut opt = ConnectOptions::new(url);
+        //let mut opt = ConnectOptions::new("postgres://0line:0linetest@127.0.0.1/apiusers?currentSchema=public");
+        opt.max_connections(3)
+            .min_connections(1)
+            .connect_timeout(Duration::from_secs(8))
+            .acquire_timeout(Duration::from_secs(8))
+            .idle_timeout(Duration::from_secs(8))
+            .max_lifetime(Duration::from_secs(8))
+            .sqlx_logging(true)
+            .sqlx_logging_level(log::LevelFilter::Info)
+            .set_schema_search_path(schema);
+
+        //let db = Database::connect(opt).await?;
+        let db = Database::connect(opt).await?;
+        Ok(Self { connection: Some(db.into()) })
+    }
+}
+
+//Repository
+pub trait SeaORMRepository {
+    fn get_connection(&self) -> Result<&DatabaseConnection, DbErr>;
+
+    //async fn execute(&self, query: String) -> Result<sea_orm::ExecResult, DbErr>;
+    fn get_backend(&self) -> Result<DatabaseBackend, DbErr>;
+}
+impl SeaORMRepository for SeaOrmConfigPosgresqlFactory {
+    fn get_connection(&self) -> Result<&DatabaseConnection, DbErr> {
+        self.connection.as_ref().ok_or(DbErr::Conn(RuntimeErr::Internal("Connection not found".to_string())))
+
+    }
+    fn get_backend(&self) -> Result<DatabaseBackend, DbErr> {
+        self.connection
+            .as_ref()
+            .map(|conn| conn.get_database_backend())
+            .ok_or(DbErr::Custom("Connection not found".to_string()))
+    }
+
+
+    /*async fn execute(&self, query: String) -> Result<sea_orm::ExecResult, DbErr> {
+        let stmt = Statement::from_string(self.get_backend()?, query);
+        let conn = self.get_connection()?;
+        let result =conn.execute(stmt).await;
+        match result {
+            Ok(res) => Ok(res),
+            Err(e) => Err(DbErr::Custom(e.to_string())),
+        }
+    }
+
+    fn get_backend(&self) -> Result<DatabaseBackend, DbErr> {
+        self.connection
+            .as_ref()
+            .map(|conn| conn.get_database_backend())
+            .ok_or(DbErr::Custom("Connection not found".to_string()))
+    }*/
+
+
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    use crate::shared::infraestruture::seaorm::sea_orm_config::{SeaORMRepository, SeaOrmConfigPosgresqlFactory};
+    use sea_orm::ConnectionTrait;
+    #[actix_rt::test]
+    async fn test_connect() {
+        let db = SeaOrmConfigPosgresqlFactory::new().await;
+        assert!(db.is_ok());
+    }
+
+    #[actix_rt::test]
+    async fn get_connect() {
+        let db = SeaOrmConfigPosgresqlFactory::new().await.unwrap();
+        let conn = db.get_connection();
+        assert!(conn.is_ok())
+        /*let db = SeaOrmConfigPosgresqlFactory::new().await.unwrap();
+        let mut connection = db.get_connection();
+        assert!(connection.is_ok());*/
+    }
+
+
+
+    #[actix_rt::test]
+    async fn test_query() {
+        let mut db = SeaOrmConfigPosgresqlFactory::new().await.unwrap();
+        /*let connection = db.get_connection().unwrap();
+        let stmt = Statement::from_string(
+            connection.get_database_backend(),
+            "CREATE TABLE IF NOT EXISTS TEST (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL);".to_string(),
+        );
+        let res = connection.execute(stmt).await.unwrap();
+        println!("{:?}", res);*/
+    }
+
+    #[actix_rt::test]
+    async fn test_select() {
+        let mut db = SeaOrmConfigPosgresqlFactory::new().await.unwrap();
+
+        /*let rows: Vec<QueryResult> = db.get_connection().unwrap().query_all(Statement::from_string(
+            db.get_backend().unwrap(),
+            "SELECT * FROM TEST".to_string(),
+        )).await.unwrap();
+        for row in rows {
+            let id: i32 = row.try_get_by("id").unwrap_or("0".parse().unwrap());
+            let name: String = row.try_get_by("name").unwrap_or("".to_string());
+            let email: String = row.try_get_by("email").unwrap_or("".to_string());
+            let password: String = row.try_get_by("password").unwrap_or("".to_string());
+            println!("id: {}, name: {}, email: {}, password: {}", id, name, email, password);
+        }*/
+    }
+
+}

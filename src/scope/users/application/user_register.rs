@@ -73,11 +73,8 @@ impl<R: UserRepository> UserRegisterService<R> {
 }
 #[cfg(test)]
 mod tests {
-    use std::process::id;
     use super::*;
     use mockall::predicate::*;
-    use mockall::*;
-    use serde_json::json;
     use crate::scope::users::infraestructure::persistence::memory::MemoryRepository;
     #[actix_web::test]
     async fn ensure_user_service(){
