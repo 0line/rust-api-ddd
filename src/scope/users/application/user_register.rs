@@ -14,15 +14,17 @@ pub struct UserRegisterService<R: UserRepository> {
 pub struct UserRegisterRequest {
     id: String,
     email: String,
-    pwd:String
+    pwd:String,
+    confirmpwd: String
 }
 
 impl UserRegisterRequest {
-    pub fn new(id: String, email: String, pwd: String) -> Self {
+    pub fn new(id: String, email: String, pwd: String, confirmpwd: String) -> Self {
         Self {
             id,
             email,
-            pwd
+            pwd,
+            confirmpwd
         }
     }
 }
@@ -35,7 +37,18 @@ impl<R: UserRepository> UserRegisterService<R> {
 
     pub async fn execute(&self, request:UserRegisterRequest) -> APIResponse {
         let mut error_vec: Vec<String> = Vec::new();
-        if let Err(e) = UserId::new(request.id.clone()) {
+        /*let user = User::new(request.id, request.email, request.pwd);
+        match user {
+            Ok(u) => {
+                return self.repository.save(u).await
+            }
+            Err(error) => APIResponse::new(
+                false,
+                Some(error.to_string()),
+                None,
+                None)
+        }*/
+        /*if let Err(e) = UserId::new(request.id.clone()) {
             error_vec.push(e.to_string());
         }
 
@@ -53,12 +66,12 @@ impl<R: UserRepository> UserRegisterService<R> {
                 Some("Ocurrio un error".to_string()),
                 None,
                 Some(error_vec));
-        }
+        }*/
 
-        let uuid = UserId::new(request.id).unwrap();
+        /*let uuid = UserId::new(request.id).unwrap();
         let email = UserEmail::new(request.email).unwrap();
-        let pwd = UserPwd::new(request.pwd).unwrap();
-        let user = User::new(uuid, email, pwd);
+        let pwd = UserPwd::new(request.pwd).unwrap();*/
+        let user = User::create(request.id, request.email, request.pwd, request.confirmpwd);
         match user {
             Ok(u) => {
                 return self.repository.save(u).await
@@ -83,11 +96,8 @@ mod tests {
         const UUID: &str = "b92f6347-4d73-4427-8ed7-512f9d58738f";
         const EMAIL: &str   = "test@mail.com";
         const PWD: &str  = "Asdf123#";
-        let request = UserRegisterRequest::new(
-            UUID.parse().unwrap(),
-            EMAIL.to_string(),
-            PWD.to_string()
-        );
+        const CONFIRMPWD: &str  = "Asdf123#";
+        let request = UserRegisterRequest::new(UUID.parse().unwrap(), EMAIL.to_string(), PWD.to_string(), CONFIRMPWD.to_string());
         let result = service.execute(request).await;
         println!("{:?}",  serde_json::to_string(&result));
     }

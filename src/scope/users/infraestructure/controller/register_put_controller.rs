@@ -21,9 +21,10 @@ impl<R: UserRepository> Controller for RegisterController<R> {
         let uuid = body.get("uuid").and_then(|v| v.as_str()).unwrap_or("").to_string();
         let email = body.get("email").and_then(|v| v.as_str()).unwrap_or("").to_string();
         let pwd = body.get("pwd").and_then(|v| v.as_str()).unwrap_or("").to_string();
+        let confirm_pwd = body.get("confirm_pwd").and_then(|v| v.as_str()).unwrap_or("").to_string();
         let repository = MemoryRepository::new();
         let user_register = UserRegisterService::new(repository);
-        let result = user_register.execute(UserRegisterRequest::new(uuid, email, pwd)).await;
+        let result = user_register.execute(UserRegisterRequest::new(uuid, email, pwd, confirm_pwd)).await;
         if !result.get_success(){
             HttpResponse::BadRequest().json(result)
         } else {

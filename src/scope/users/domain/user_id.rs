@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use uuid::{Uuid};
 use crate::scope::users::domain::users_errors::UserError;
 
+//Value Object UserId
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserId {
     #[serde(with = "uuid_serde")]

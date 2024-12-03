@@ -2,7 +2,7 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use crate::scope::users::domain::users_errors::UserError;
 
-
+//Value Object UserEmail
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserEmail {
     value: String,

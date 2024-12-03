@@ -4,6 +4,7 @@ use crate::scope::users::domain::user::User;
 use mockall::*;
 use crate::shared::domain::responder::APIResponse;
 
+//Repository User
 #[automock]
 #[async_trait]
 pub trait UserRepository: Send + Sync {
