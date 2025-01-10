@@ -1,6 +1,6 @@
 use std::convert::TryInto;
 use std::env;
-use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, DbErr, RuntimeErr, Statement};
+use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, DbErr, EntityName, RuntimeErr, Statement};
 use std::time::Duration;
 use dotenvy::dotenv;
 
@@ -49,8 +49,12 @@ pub trait SeaORMRepository {
 
     //async fn execute(&self, query: String) -> Result<sea_orm::ExecResult, DbErr>;
     fn get_backend(&self) -> Result<DatabaseBackend, DbErr>;
+
+    fn repository(&self, entity: impl EntityName);
+
 }
 impl SeaORMRepository for SeaOrmConfigPosgresqlFactory {
+
     fn get_connection(&self) -> Result<&DatabaseConnection, DbErr> {
         self.connection.as_ref().ok_or(DbErr::Conn(RuntimeErr::Internal("Connection not found".to_string())))
 
@@ -62,7 +66,11 @@ impl SeaORMRepository for SeaOrmConfigPosgresqlFactory {
             .ok_or(DbErr::Custom("Connection not found".to_string()))
     }
 
-
+    fn repository(&self, entity: impl EntityName) {
+        let conn = self.get_connection().unwrap();
+        let repo = entity.clone().into_repository(conn);
+        println!("{:?}", repo);
+    }
     /*async fn execute(&self, query: String) -> Result<sea_orm::ExecResult, DbErr> {
         let stmt = Statement::from_string(self.get_backend()?, query);
         let conn = self.get_connection()?;
@@ -79,6 +87,7 @@ impl SeaORMRepository for SeaOrmConfigPosgresqlFactory {
             .map(|conn| conn.get_database_backend())
             .ok_or(DbErr::Custom("Connection not found".to_string()))
     }*/
+
 
 
 }

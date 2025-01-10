@@ -17,7 +17,7 @@ services:
       start_period: 20s
       timeout: 10s
     depends_on:
-        - dbusers
+      - dbusers
   dbusers:
     container_name: dbusers
     image: postgres:13
@@ -25,7 +25,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .docker.env
+      - ./docker.env
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"

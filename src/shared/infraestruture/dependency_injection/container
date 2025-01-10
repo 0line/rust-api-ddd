@@ -1,0 +1,16 @@
+
+
+use shaku::{module, Component, Interface, HasComponent};
+use crate::scope::healthy::healthcheck::StatusController;
+use crate::scope::users::infraestructure::controller::register_put_controller::RegisterController;
+use crate::scope::users::infraestructure::persistence::memory::MemoryRepository;
+
+module! {
+    pub Container{
+        components = [
+            StatusController,
+            RegisterController<MemoryRepository>
+        ],
+        providers = []
+    }
+}

@@ -51,6 +51,12 @@ impl UserPwd {
        &self.value
     }
 
+    pub fn set_value(v: String) -> Self {
+        Self {
+            value: v
+        }
+    }
+
     pub fn encrypt_password(&self) -> String {
         // Encriptar la contraseña
         self.value.clone()

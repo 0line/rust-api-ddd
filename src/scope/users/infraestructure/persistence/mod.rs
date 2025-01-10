@@ -1,1 +1,3 @@
-pub mod memory;
+
+mod postgresql;
+pub mod PostgresqlUserRepository;

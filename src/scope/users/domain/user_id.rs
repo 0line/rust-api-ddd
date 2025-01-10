@@ -31,10 +31,11 @@ impl UserId {
 
 // Implementación de la serialización y deserialización para `Uuid`
 mod uuid_serde {
-    use serde::{self, Deserialize, Deserializer, Serializer};
     use uuid::Uuid;
+use serde::{self, Deserialize, Deserializer, Serializer};
+    //use uuid::{Uuid};
 
-    pub fn serialize<S>(uuid: &Uuid, serializer: S) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(uuid: &uuid::Uuid, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {

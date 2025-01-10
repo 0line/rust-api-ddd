@@ -1,9 +1,6 @@
 use std::sync::{Arc};
 use crate::scope::users::domain::user_repository::UserRepository;
 use crate::scope::users::domain::user::User;
-use crate::scope::users::domain::user_email::UserEmail;
-use crate::scope::users::domain::user_id::UserId;
-use crate::scope::users::domain::user_pwd::UserPwd;
 use crate::shared::domain::responder::APIResponse;
 
 #[derive(Clone, Debug)]
@@ -37,50 +34,16 @@ impl<R: UserRepository> UserRegisterService<R> {
 
     pub async fn execute(&self, request:UserRegisterRequest) -> APIResponse {
         let mut error_vec: Vec<String> = Vec::new();
-        /*let user = User::new(request.id, request.email, request.pwd);
-        match user {
-            Ok(u) => {
-                return self.repository.save(u).await
-            }
-            Err(error) => APIResponse::new(
-                false,
-                Some(error.to_string()),
-                None,
-                None)
-        }*/
-        /*if let Err(e) = UserId::new(request.id.clone()) {
-            error_vec.push(e.to_string());
-        }
-
-        if let Err(e) = UserEmail::new(request.email.clone()) {
-            error_vec.push(e.to_string());
-        }
-
-        if let Err(e) = UserPwd::new(request.pwd.clone()) {
-            error_vec.push(e.to_string());
-        }
-
-        if !error_vec.is_empty() {
-            return APIResponse::new(
-                false,
-                Some("Ocurrio un error".to_string()),
-                None,
-                Some(error_vec));
-        }*/
-
-        /*let uuid = UserId::new(request.id).unwrap();
-        let email = UserEmail::new(request.email).unwrap();
-        let pwd = UserPwd::new(request.pwd).unwrap();*/
         let user = User::create(request.id, request.email, request.pwd, request.confirmpwd);
         match user {
             Ok(u) => {
-                return self.repository.save(u).await
+                return self.repository.save(u.into()).await
             }
-            Err(..) => APIResponse::new(
+            Err(e) => APIResponse::new(
                 false,
-                Some("Ocurrio un error".to_string()),
+                Some("Error al crear el usuario".to_string()),
                 None,
-                None)
+                Some(e))
         }
     }
 }

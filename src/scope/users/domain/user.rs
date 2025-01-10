@@ -5,15 +5,13 @@ use uuid::{Uuid};
 use crate::scope::users::domain::user_email::UserEmail;
 use crate::scope::users::domain::user_id::UserId;
 use crate::scope::users::domain::user_pwd::UserPwd;
-use crate::scope::users::domain::users_errors::UserError;
-use crate::shared::domain::responder::APIResponse;
 
 //Entity User
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User{
-    uuid: UserId,
-    email: UserEmail,
-    pwd: UserPwd,
+    pub(crate) uuid: UserId,
+    pub(crate) email: UserEmail,
+    pub(crate) pwd: UserPwd,
 }
 
 impl User {
@@ -63,6 +61,12 @@ impl User {
             Ok(Self::new(uuid.unwrap(), email.unwrap(), password.unwrap()))
         }
     }
+    pub fn save(uuid: String, email: String, pwd: String) -> Self {
+        let uuid = UserId::new(uuid).unwrap();
+        let email = UserEmail::new(email).unwrap();
+        let pwd = UserPwd::set_value(pwd);
+        Self::new(uuid, email, pwd)
+    }
     pub fn get_id(&self) -> &Uuid {
         &self.uuid.get_value()
     }
@@ -96,7 +100,6 @@ impl fmt::Display for User {
 
 #[cfg(test)]
 mod tests {
-    use crate::scope::users::domain::user;
     use super::*;
 
     //const UUID : UserId  = UserId::try_from("b92f6347-4d73-4427-8ed7-512f9d58738f").unwrap();
