@@ -35,7 +35,7 @@ impl SeaOrmClientFactory {
             .max_connections(3)
             .min_connections(1)
             .connect_timeout(Duration::from_secs(60))
-            .acquire_timeout(Duration::from_secs(8))
+            .acquire_timeout(Duration::from_secs(60))
             .idle_timeout(Duration::from_secs(8))
             .max_lifetime(Duration::from_secs(8))
             .sqlx_logging(true)
