@@ -37,7 +37,7 @@ impl<R: UserRepository> UserRegisterService<R> {
         let user = User::create(request.id, request.email, request.pwd, request.confirmpwd);
         match user {
             Ok(u) => {
-                return self.repository.save(u.into()).await
+                return self.repository.save(u).await
             }
             Err(e) => APIResponse::new(
                 false,

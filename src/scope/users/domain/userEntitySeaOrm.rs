@@ -16,7 +16,9 @@ pub struct Model {
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
 
-impl ActiveModelBehavior for ActiveModel {}
+impl ActiveModelBehavior for ActiveModel {
+
+}
 
 impl From<User> for Model {
     fn from(user: User) -> Self {
@@ -27,7 +29,7 @@ impl From<User> for Model {
         }
     }
 }
-
+/*
 impl TryInto<User> for Model {
     type Error = String;
 
@@ -36,4 +38,4 @@ impl TryInto<User> for Model {
        let U= User::save(self.uuid, self.email, self.pwd);
        Ok(U)
     }
-}
+}*/
